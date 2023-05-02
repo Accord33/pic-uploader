@@ -39,14 +39,13 @@
     if(isset($_FILES['image'])) {
         // 画像ファイルの保存先を指定する
         $target_dir = "./pic/";
-        echo gettype($_FILES['image']['name']);
 
         // アップロードされた画像ファイルの数を取得する
         $num_files = count($_FILES['image']['name']);
-
+        echo $num_files;
+	echo '<br>';
         // 画像ファイルを1枚ずつ処理する
         for($i = 0; $i < $num_files; $i++) {
-            echo $i;
             // アップロードされた画像ファイルの名前を取得する
             $image_name = $_FILES['image']['name'][$i];
             $name = $_POST['name'];
@@ -66,10 +65,11 @@
                 $image_temp_name = $image_temp_name . '.jpg';
                 $image_name = substr($image_name, 0, strrpos($image_name, ".")) . ".jpg";
             }
-        echo '変換終了　アップロードを開始します';
             // 画像ファイルを保存する
-            if (move_uploaded_file($image_temp_name, $target_dir . $image_name)) {
-                echo "ファイルをアップロードしました。";
+            if (move_uploaded_file($image_temp_name, $target_dir . $image_name))
+	    {
+		    echo $i+1;
+		    echo ".ファイルをアップロードしました。<br>";
             } else {
                 echo 'エラー';
             }
