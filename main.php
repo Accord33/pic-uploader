@@ -5,8 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title><link rel="shortcut icon" href="https://cdn.discordapp.com/attachments/828286173700816947/976693328487792651/3_20220519125016.png">
+    <!--スタイルシートの指定を追加-->
+    <link rel="stylesheet" href="main.css">
 </head>
-<body>
+<body >
+
     <?php
     // エラー表示を設定する
     ini_set('display_errors', 1);
@@ -77,11 +80,18 @@
 
     }
     ?>
+
+    <!--タイトル以下の投稿フォームを画面中央にするためにdivでセンタリング-->
+    <div class="container">
+    <img src="title.png" class="image_size">
+    <h2>注意；一度の画像アップロードは10枚以下でお願いします</h2>
+    <h2>注意；動画のアップロードはできません</h2>
     <!-- アップロード用のフォームを作成する -->
     <form method="post" enctype="multipart/form-data">
-        <label>名前: </label><input type="text" name="name"><br>
-        <label>画像ファイル: </label><input type="file" name="image[]" multiple><br>
+        <label>お名前 </label><input type="text" name="name"><br>
+        <label>画像の選択 </label><input type="file" name="image[]" multiple><br>
         <input type="submit" value="アップロード">
     </form>
+</div>
 </body>
 </html>
