@@ -15,12 +15,12 @@
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+    $stack = array();
 
     function imagecreatefromheic($filename) {
         if (!function_exists('libheif_version')) {
         return false;
         }
-
         $heif = new \LibHeif\Heif();
         $handle = fopen($filename, 'rb');
         $heif->loadFromHandle($handle);
@@ -45,8 +45,6 @@
 
         // アップロードされた画像ファイルの数を取得する
         $num_files = count($_FILES['image']['name']);
-        echo $num_files;
-	echo '<br>';
         // 画像ファイルを1枚ずつ処理する
         for($i = 0; $i < $num_files; $i++) {
             // アップロードされた画像ファイルの名前を取得する
@@ -70,27 +68,31 @@
             }
             // 画像ファイルを保存する
             if (move_uploaded_file($image_temp_name, $target_dir . $image_name))
-	    {
-		    echo $i+1;
-		    echo ".ファイルをアップロードしました。<br>";
+	        {
+                array_push($stack, true);
             } else {
-                echo 'エラー';
+                array_push($stack, false);
             }
         }
-
+        if (in_array(false, $stack, true)) { // 配列にfalseがあるかチェック
+            echo "<script>alert('正常にアップロードされませんでした。')</script>";  // falseがある場合は"No"を返す
+        } else {
+            echo "<script>alert('{$num_files}枚の画像が正常にアップロードされました。')</script>"; // falseがない場合は"Yes"を返す
+        }
+        $stack = array();
     }
-    ?>
+?>
 
     <!--タイトル以下の投稿フォームを画面中央にするためにdivでセンタリング-->
     <div class="container">
     <img src="title.png" class="image_size">
-    <h2>注意；一度の画像アップロードは10枚以下でお願いします</h2>
-    <h2>注意；動画のアップロードはできません</h2>
     <!-- アップロード用のフォームを作成する -->
     <form method="post" enctype="multipart/form-data">
         <label>お名前 </label><input type="text" name="name"><br>
         <label>画像の選択 </label><input type="file" name="image[]" multiple><br>
         <input type="submit" value="アップロード">
+        <p>※1.画像は一度に10枚まで送信できます。</p>
+        <p>※2.動画のアップロードはできません</p>
     </form>
 </div>
 </body>
